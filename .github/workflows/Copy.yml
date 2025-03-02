@@ -14,8 +14,17 @@ jobs:
         
       - name: 下载代码
         run: |
-          wget https://github.com/ActionsEDU3/Tools/archive/refs/heads/master.zip -O Tools-$(date "+%Y%m%d%H%M%S").zip
-      
+          date "+%Y%m%d%H%M%S" > time.txt
+          wget https://github.com/ActionsEDU3/Tools/archive/refs/heads/master.zip -O Tools-$(cat time.txt).zip
+
+      - name: 发送代码
+        run: |
+          curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument" \
+               -F chat_id="${{ secrets.TELEGRAM_TO }}" \
+               -F document=@"Tools-$(cat time.txt).zip" \
+               -F caption="📁 代码备份文件 $(cat time.txt)" \               
+               -F parse_mode="HTML"
+
       - name : 上传代码
         uses: actions/upload-artifact@v4
         with:
