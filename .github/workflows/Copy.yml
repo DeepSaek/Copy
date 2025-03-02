@@ -19,6 +19,6 @@ jobs:
       - name : 上传代码
         uses: actions/upload-artifact@v4
         with:
-          name: MySQL Backup
+          name: Code Backup
           path: Tools*.zip
 
