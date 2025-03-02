@@ -1,0 +1,30 @@
+name: Copy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Copy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 迁出代码
+        uses: actions/checkout@v3
+        
+      - name: 部署 Mysql 数据库
+        run: |
+          mkdir -p ${{ github.workspace }}/mysql/{data,conf,log}
+          sudo docker compose up -d
+          sudo docker ps -a 
+
+      - name: 打包数据库文件
+        run: |
+          sudo docker ps -a 
+          sudo docker stop mysql
+          sudo 7z a mysql.7z ${{ github.workspace }}/mysql -p${{ secrets.WINPASS }} -mhe -t7z
+      
+      - name : 上传固件
+        uses: actions/upload-artifact@v4
+        with:
+          name: MySQL Backup
+          path: mysql.7z
+
