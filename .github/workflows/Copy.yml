@@ -11,10 +11,13 @@ jobs:
     steps:
       - name: 迁出代码
         uses: actions/checkout@v3
-        
+
       - name: 下载代码
         run: |
-          date "+%Y%m%d%H%M%S" > time.txt
+          # 捕获统一时间戳并生成两种格式
+          TS=$(date +%s)
+          echo $(date -d "@$TS" "+%Y%m%d%H%M%S") > time.txt
+          echo $(date -d "@$TS" "+%Y-%m-%d %H:%M:%S") > new_time.txt
           wget https://github.com/ActionsEDU3/Tools/archive/refs/heads/master.zip -O Tools-$(cat time.txt).zip
 
       - name: 发送代码
@@ -22,12 +25,11 @@ jobs:
           curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument" \
                -F chat_id="${{ secrets.TELEGRAM_TO }}" \
                -F document=@"Tools-$(cat time.txt).zip" \
-               -F caption="📁 代码备份文件 $(cat time.txt)" \
+               -F caption="📁 代码备份文件 $(cat new_time.txt)" \
                -F parse_mode="HTML"
 
-      - name : 上传代码
+      - name: 上传代码
         uses: actions/upload-artifact@v4
         with:
           name: Code Backup
           path: Tools*.zip
-
