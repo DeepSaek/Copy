@@ -14,10 +14,10 @@ jobs:
 
       - name: 下载代码
         run: |
-          # 捕获统一时间戳并生成两种格式
+          # 设置 UTC+8 时区并生成时间
           TS=$(date +%s)
-          echo $(date -d "@$TS" "+%Y%m%d%H%M%S") > time.txt
-          echo $(date -d "@$TS" "+%Y-%m-%d %H:%M:%S") > new_time.txt
+          echo $(TZ="Asia/Shanghai" date -d "@$TS" "+%Y%m%d%H%M%S") > time.txt
+          echo $(TZ="Asia/Shanghai" date -d "@$TS" "+%Y-%m-%d %H:%M:%S") > new_time.txt
           wget https://github.com/ActionsEDU3/Tools/archive/refs/heads/master.zip -O Tools-$(cat time.txt).zip
 
       - name: 发送代码
