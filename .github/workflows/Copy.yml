@@ -25,13 +25,13 @@ jobs:
           curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument" \
                -F chat_id="${{ secrets.TELEGRAM_TO }}" \
                -F document=@"Tools-$(cat time.txt).zip" \
-               -F caption="📁 代码备份 $(cat new_time.txt)" \
+               -F caption="❤️ 代码备份 $(cat new_time.txt)" \
                -F parse_mode="HTML"
 
       - name: 上传代码
         uses: actions/upload-artifact@v4
         with:
-          name: Code Backup
+          name: Code Backup 1
           path: Tools*.zip
 
   Copy2:
@@ -53,13 +53,15 @@ jobs:
           curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument" \
                -F chat_id="${{ secrets.TELEGRAM_TO }}" \
                -F document=@"OpenWRT-$(cat time.txt).zip" \
-               -F caption="📁 代码备份 $(cat new_time.txt)" \
+               -F caption="💚 代码备份 $(cat new_time.txt)" \
                -F parse_mode="HTML"
 
       - name: 上传代码
         uses: actions/upload-artifact@v4
         with:
-          name: Code Backup
+          name: Code Backup 2
+          path: OpenWRT*.zip
+
 
   Copy3:
     runs-on: ubuntu-latest
@@ -80,10 +82,11 @@ jobs:
           curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument" \
                -F chat_id="${{ secrets.TELEGRAM_TO }}" \
                -F document=@"Copy-$(cat time.txt).zip" \
-               -F caption="📁 代码备份 $(cat new_time.txt)" \
+               -F caption="💙 代码备份 $(cat new_time.txt)" \
                -F parse_mode="HTML"
 
       - name: 上传代码
         uses: actions/upload-artifact@v4
         with:
-          name: Code Backup
+          name: Code Backup 3
+          path: Copy*.zip
