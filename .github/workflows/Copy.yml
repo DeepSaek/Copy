@@ -118,4 +118,14 @@ jobs:
         with:
           name: PIC Backup
           path: PIC*.zip
-          
+
+  Message:
+    runs-on: ubuntu-latest
+    needs: [Copy1, Copy2, Copy3, Copy4]
+    steps:
+      - name: 发送消息
+        run: |
+          curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" \
+               -F chat_id="${{ secrets.TELEGRAM_TO }}" \
+               -F text="🚀 代码备份完成" \
+               -F parse_mode="HTML"
