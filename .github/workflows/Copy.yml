@@ -75,7 +75,7 @@ jobs:
           TS=$(date +%s)
           echo $(TZ="Asia/Shanghai" date -d "@$TS" "+%Y%m%d%H%M%S") > time.txt
           echo $(TZ="Asia/Shanghai" date -d "@$TS" "+%Y-%m-%d %H:%M:%S") > new_time.txt
-          wget --header="Authorization: ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/DeepSaek/Copy/zipball/master -O Copy-$(cat time.txt).zip
+          wget --header="Authorization: ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/DeepSaek/Copy/zipball/main -O Copy-$(cat time.txt).zip
 
 
       - name: 发送代码
