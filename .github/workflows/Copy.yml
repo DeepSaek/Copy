@@ -127,5 +127,5 @@ jobs:
         run: |
           curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" \
                -F chat_id="${{ secrets.TELEGRAM_TO }}" \
-               -F text="🚀 代码备份完成" \
+               -F text="🚀 备份完成" \
                -F parse_mode="HTML"
