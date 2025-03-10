@@ -103,7 +103,7 @@ jobs:
           TS=$(date +%s)
           echo $(TZ="Asia/Shanghai" date -d "@$TS" "+%Y%m%d%H%M%S") > time.txt
           echo $(TZ="Asia/Shanghai" date -d "@$TS" "+%Y-%m-%d %H:%M:%S") > new_time.txt
-          wget https://github.com/DiipSiik/cuddly-garbanzo/archive/refs/heads/master.zip -O PIC-$(cat time.txt).zip
+          wget --header="Authorization: ${{ secrets.GITHUB_TOKEN }}" https://github.com/DiipSiik/cuddly-garbanzo/archive/refs/heads/master.zip -O PIC-$(cat time.txt).zip
 
       - name: 发送代码
         run: |
