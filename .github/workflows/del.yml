@@ -1,0 +1,66 @@
+name: Delete Workflow Runs
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: '要保留的工作流运行记录天数'
+        required: true
+        default: '0'
+      minimum_runs:
+        description: '每个工作流最少保留的运行次数'
+        required: true
+        default: '0'
+      delete_workflow_pattern:
+        description: '要删除的工作流名称或文件名'
+        required: false
+      delete_workflow_by_state_pattern:
+        description: '按状态筛选要删除的工作流：'
+        required: true
+        default: "ALL"
+        type: choice
+        options:
+          - "ALL"
+          - active
+          - deleted
+          - disabled_inactivity
+          - disabled_manually
+      delete_run_by_conclusion_pattern:
+        description: '根据运行结果删除运行记录：'
+        required: true
+        default: "ALL"
+        type: choice
+        options:
+          - "ALL"
+          - "Unsuccessful：action_required,cancelled,failure,skipped"
+          - action_required
+          - cancelled
+          - failure
+          - skipped
+          - success
+      dry_run:
+        description: '仅记录模拟更改，不执行实际删除操作'
+        required: false
+
+jobs:
+  Delete:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: 删除工作流运行记录
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: ${{ github.event.inputs.days }}
+          keep_minimum_runs: ${{ github.event.inputs.minimum_runs }}
+          delete_workflow_pattern: ${{ github.event.inputs.delete_workflow_pattern }}
+          delete_workflow_by_state_pattern: ${{ github.event.inputs.delete_workflow_by_state_pattern }}
+          delete_run_by_conclusion_pattern: >-
+            ${{
+              startsWith(github.event.inputs.delete_run_by_conclusion_pattern, '不成功的：')
+              && 'action_required,cancelled,failure,skipped'
+              || github.event.inputs.delete_run_by_conclusion_pattern
+            }}
+          dry_run: ${{ github.event.inputs.dry_run }}
