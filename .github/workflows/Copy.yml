@@ -119,6 +119,34 @@ jobs:
           name: PIC Backup
           path: PIC*.zip
 
+  Copy5:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 迁出代码
+        uses: actions/checkout@v3
+
+      - name: 下载代码
+        run: |
+          # 设置 UTC+8 时区并生成时间
+          TS=$(date +%s)
+          echo $(TZ="Asia/Shanghai" date -d "@$TS" "+%Y%m%d%H%M%S") > time.txt
+          echo $(TZ="Asia/Shanghai" date -d "@$TS" "+%Y-%m-%d %H:%M:%S") > new_time.txt
+          wget https://github.com/DeepSaek/API/archive/refs/heads/main.zip -O API-$(cat time.txt).zip
+
+      - name: 发送代码
+        run: |
+          curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument" \
+               -F chat_id="${{ secrets.TELEGRAM_TO }}" \
+               -F document=@"API-$(cat time.txt).zip" \
+               -F caption="🤍 代码备份 $(cat new_time.txt)" \
+               -F parse_mode="HTML"
+
+      - name: 上传代码
+        uses: actions/upload-artifact@v4
+        with:
+          name: Code Backup 2
+          path: OpenWRT*.zip
+
   Message:
     runs-on: ubuntu-latest
     needs: [Copy1, Copy2, Copy3, Copy4]
