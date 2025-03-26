@@ -145,7 +145,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Code Backup 2
-          path: OpenWRT*.zip
+          path: API*.zip
 
   Message:
     runs-on: ubuntu-latest
