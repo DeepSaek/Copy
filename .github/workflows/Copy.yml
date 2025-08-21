@@ -113,11 +113,11 @@ jobs:
                -F caption="💜 图床备份 $(cat new_time.txt)" \
                -F parse_mode="HTML"
 
-      - name: 上传代码
-        uses: actions/upload-artifact@v4
-        with:
-          name: PIC Backup
-          path: PIC*.zip
+      # - name: 上传代码
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: PIC Backup
+      #     path: PIC*.zip
           
   Message:
     runs-on: ubuntu-latest
