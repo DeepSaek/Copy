@@ -18,7 +18,7 @@ jobs:
           TS=$(date +%s)
           echo $(TZ="Asia/Shanghai" date -d "@$TS" "+%Y%m%d%H%M%S") > time.txt
           echo $(TZ="Asia/Shanghai" date -d "@$TS" "+%Y-%m-%d %H:%M:%S") > new_time.txt
-          wget https://github.com/mactor2/tools/archive/refs/heads/master.zip -O Tools-$(cat time.txt).zip
+          wget https://github.com/mactor3/tools/archive/refs/heads/master.zip -O Tools-$(cat time.txt).zip
 
       - name: 发送代码
         run: |
