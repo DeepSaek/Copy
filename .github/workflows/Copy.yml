@@ -196,10 +196,34 @@ jobs:
                  -F document=@"JPT-$(cat time.txt).zip" \
                  -F caption="💛 HF代码备份 $(cat new_time.txt)" \
                  -F parse_mode="HTML"
+  Copy8:
+      runs-on: ubuntu-latest
+      steps:
+        - name: 迁出代码
+          uses: actions/checkout@v3
+  
+        - name: 克隆并压缩 Hugging Face Space 代码
+          run: |
+            TS=$(date +%s)
+            echo $(TZ="Asia/Shanghai" date -d "@$TS" "+%Y%m%d%H%M%S") > time.txt
+            echo $(TZ="Asia/Shanghai" date -d "@$TS" "+%Y-%m-%d %H:%M:%S") > new_time.txt
+  
+            git lfs install
+            git clone https://FRSK10:${{ secrets.HFTOKEN }}@huggingface.co/spaces/FRSK10/UBT
+            
+            zip -r UBT-$(cat time.txt).zip UBT
+  
+        - name: 发送代码
+          run: |
+            curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument" \
+                 -F chat_id="${{ secrets.TELEGRAM_TO }}" \
+                 -F document=@"UBT-$(cat time.txt).zip" \
+                 -F caption="💛 HF代码备份 $(cat new_time.txt)" \
+                 -F parse_mode="HTML"
 
   Message:
     runs-on: ubuntu-latest
-    needs: [Copy1, Copy2, Copy3, Copy5, Copy6, Copy7]
+    needs: [Copy1, Copy2, Copy3, Copy5, Copy6, Copy7, Copy8]
     steps:
       - name: 发送消息
         run: |
