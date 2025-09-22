@@ -209,15 +209,15 @@ jobs:
             echo $(TZ="Asia/Shanghai" date -d "@$TS" "+%Y-%m-%d %H:%M:%S") > new_time.txt
   
             git lfs install
-            git clone https://FRSK10:${{ secrets.HFTOKEN }}@huggingface.co/spaces/FRSK10/UBT
+            git clone https://FRSK10:${{ secrets.HFTOKEN }}@huggingface.co/spaces/FRSK10/DEBIAN
             
-            zip -r UBT-$(cat time.txt).zip UBT
+            zip -r DEBIAN-$(cat time.txt).zip DEBIAN
   
         - name: 发送代码
           run: |
             curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument" \
                  -F chat_id="${{ secrets.TELEGRAM_TO }}" \
-                 -F document=@"UBT-$(cat time.txt).zip" \
+                 -F document=@"DEBIAN-$(cat time.txt).zip" \
                  -F caption="💛 HF代码备份 $(cat new_time.txt)" \
                  -F parse_mode="HTML"
 
